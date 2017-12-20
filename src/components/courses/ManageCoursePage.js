@@ -31,7 +31,7 @@ ManageCoursePage.propTypes = {
 };
 
 function mapStateToProps(state,ownprops) {
-  let courseIn = {id: '',watchHref: '', title: '', authorId: '', length: '', category: ''};
+  let courseIn = {id: '',watchHref: '', title: 'Mariano', authorId: '', length: '', category: ''};
   
   const authorsFormattedDropdown = state.authors.map(author => {
     return {
@@ -52,4 +52,4 @@ function mapDispatchToProps(dispatch) {
     };  
 }
 
-export default connect(mapDispatchToProps,mapDispatchToProps)(ManageCoursePage);
+export default connect(mapStateToProps,mapDispatchToProps)(ManageCoursePage);

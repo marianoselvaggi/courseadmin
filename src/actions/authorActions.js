@@ -1,4 +1,4 @@
-import courseAPI from '../api/mockAuthorAPI';
+import authorAPI from '../api/mockAuthorAPI';
 import * as types from '../actions/actionTypes';
 
 export function loadAuthorsSuccess(authors) {
@@ -7,7 +7,7 @@ export function loadAuthorsSuccess(authors) {
 
 export function loadAuthors() {
   return function(dispatch) {
-    return courseAPI.getAllAuthors().then(authors => {
+    return authorAPI.getAllAuthors().then(authors => {
       dispatch(loadAuthorsSuccess(authors));
     }).catch(error => {
       throw(error);
