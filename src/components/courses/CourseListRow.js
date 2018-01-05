@@ -4,7 +4,11 @@ import {Link} from 'react-router';
 const CourseListRow = (props) => {
   return(
       <tr>
-          <td><a href={props.course.watchHref} target="_blank">Watch</a></td>
+          <td>
+            <a href={props.course.watchHref} target="_blank">Watch</a>
+            <br />
+            <a>Delete</a>
+          </td>
           <td><Link to={'/course/' + props.course.id}>{props.course.title}</Link></td>
           <td>{props.course.authorId}</td>
           <td>{props.course.category}</td>
