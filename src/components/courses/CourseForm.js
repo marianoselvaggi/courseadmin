@@ -1,8 +1,9 @@
 import React, {PropTypes} from 'react';
 import TextInput from '../common/TextInput';
 import SelectInput from '../common/SelectInput';
+import AuthorApi from '../../api/mockAuthorAPI';
 
-const CourseForm = ({course, allAuthors, onSave, onChange, authorText, loading, errors}) => {  
+const CourseForm = ({course, allAuthors, onSave, onChange, author, save, errors}) => {      
     return (
       <form>
         <h1>Manage Course</h1>
@@ -17,7 +18,7 @@ const CourseForm = ({course, allAuthors, onSave, onChange, authorText, loading, 
         <SelectInput 
           name="authorId"
           label="Author"
-          value={authorText}
+          value={author}
           defaultOption="Select Author"
           options={allAuthors}
           onChange={onChange}
@@ -39,8 +40,8 @@ const CourseForm = ({course, allAuthors, onSave, onChange, authorText, loading, 
 
         <input
           type="submit"          
-          disabled={loading}
-          value={loading ? 'Saving...': 'Save'}
+          disabled={save}
+          value={save ? 'Saving...': 'Save'}
           className="btn btn-primary"
           onClick={onSave} />
       </form>
@@ -49,12 +50,12 @@ const CourseForm = ({course, allAuthors, onSave, onChange, authorText, loading, 
 
 CourseForm.propTypes = {
   course: PropTypes.object.isRequired,
-  allAuthors: PropTypes.array,
-  authorText: PropTypes.string,
-  onSave: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  loading: React.PropTypes.bool,
-  errors: React.PropTypes.object
+  allAuthors: PropTypes.array,  
+  onSave: PropTypes.func.isRequired,
+  author: PropTypes.string,
+  onChange: PropTypes.func.isRequired,  
+  save: PropTypes.bool.isRequired,
+  errors: PropTypes.object
 };
 
 export default CourseForm;

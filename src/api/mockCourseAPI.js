@@ -1,4 +1,5 @@
-import {delay} from './delay';
+import delay from './delay';
+import AuthorApi from './mockAuthorAPI';
 
 // This file mocks a web API by working with the hard-coded data below.
 // It uses setTimeout to simulate the delay of an AJAX call.
@@ -67,28 +68,31 @@ class CourseApi {
   static saveCourse(course) {    
     course = Object.assign({}, course); // to avoid manipulating object passed in.
     return new Promise((resolve, reject) => {
-      // Simulate server-side validation
-      const minCourseTitleLength = 10;        
-      
-      if (course.title.length < minCourseTitleLength) {
-        reject(`Title must be at least ${minCourseTitleLength} characters.`);      
-      } else {            
-        if (course.id) {
-          const existingCourseIndex = courses.findIndex(a => a.id == course.id);
-          courses.splice(existingCourseIndex, 1, course);
-        } else {
-          //Just simulating creation here.
-          //The server would generate ids and watchHref's for new courses in a real app.
-          //Cloning so copy returned is passed by value rather than by reference.
-          course.id = generateId(course);
-          course.watchHref = `http://www.pluralsight.com/courses/${course.id}`;
-          courses.push(course);
-        }
+      setTimeout(() => {              
+        // Simulate server-side validation
+        const minCourseTitleLength = 10;        
+        
+        if (course.title.length < minCourseTitleLength) {
+          reject('Title must be at least ${minCourseTitleLength} characters.');      
+        } else if (! course.authorId) {
+          reject('You must choose an author from the list.');                  
+        } else {          
+          course.authorId = AuthorApi.getAuthorid(course.authorId);          
+          if (course.id) {
+            const existingCourseIndex = courses.findIndex(a => a.id == course.id);
+            courses.splice(existingCourseIndex, 1, course);
+          } else {
+            //Just simulating creation here.
+            //The server would generate ids and watchHref's for new courses in a real app.
+            //Cloning so copy returned is passed by value rather than by reference.
+            course.id = generateId(course);
+            course.watchHref = `http://www.pluralsight.com/courses/${course.id}`;
+            courses.push(course);
+          }
 
-        resolve(course);
-      }
-      /*setTimeout(() => {               
-      }, 1000);*/
+          resolve(course);
+        }
+      }, delay);  
     });
   }
 

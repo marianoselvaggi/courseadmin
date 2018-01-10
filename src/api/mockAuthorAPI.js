@@ -36,9 +36,9 @@ class AuthorApi {
   }
 
   static saveAuthor(author) {
-	author = Object.assign({}, author); // to avoid manipulating object passed in.
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
+      setTimeout(() => {            
+        author = Object.assign({}, author); // to avoid manipulating object passed in.
         // Simulate server-side validation
         const minAuthorNameLength = 3;
         if (author.firstName.length < minAuthorNameLength) {
@@ -61,8 +61,8 @@ class AuthorApi {
         }
 
         resolve(author);
-      }, delay);
-    });
+      }, delay);    
+    });    
   }
 
   static deleteAuthor(authorId) {
@@ -75,6 +75,25 @@ class AuthorApi {
         resolve();
       }, delay);
     });
+  }
+
+  static getAuthorName(authorId) {    
+    let auth = authors.filter(author => {
+      return author.id == authorId;
+    });
+
+    if(auth[0] != null) return (auth[0].firstName + " " + auth[0].lastName);
+
+    return '';
+  }
+
+  static getAuthorid(name) {
+    let author = authors.filter(author => {
+      let fullname = author.firstName + " " + author.lastName;
+      return fullname == name;
+    });
+
+    return author[0].id;    
   }
 }
 

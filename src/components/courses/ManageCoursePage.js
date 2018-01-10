@@ -11,6 +11,7 @@ class ManageCoursePage extends React.Component {
 
       this.state = {
         course: Object.assign({}, this.props.course),        
+        save: false,
         errors: {}
       };
 
@@ -24,22 +25,12 @@ class ManageCoursePage extends React.Component {
     }
   }
 
-  updateCourseState(event) {
+  updateCourseState(event) {    
     const field = event.target.name;
     let course = this.state.course;
-    course[field] = event.target.value;    
+    course[field] = event.target.value;   
     return this.setState({course: course});
   }
-
-/*  getAuthorText() {    
-    if(!this.state.course.authorId) return '';
-
-    let auth = this.props.authors.filter(data => {
-      return data.value == this.state.course.authorId;
-    });
-        
-    return auth[0].text;
-  }*/
 
   courseFormisInvalid(){
     let formisvalid = true;
@@ -47,6 +38,16 @@ class ManageCoursePage extends React.Component {
 
     if (this.state.course.title.length < 5) {
       errors.title = 'Title must be at least 5 characters';
+      formisvalid = false;
+    }
+
+    if (this.state.course.category.length < 1) {
+      errors.category = 'Category cant\'t be empty';
+      formisvalid = false;
+    }
+
+    if (this.state.course.length.length < 1) {
+      errors.length = 'Lengtt cant\'t be empty';
       formisvalid = false;
     }
 
@@ -61,12 +62,15 @@ class ManageCoursePage extends React.Component {
       return;
     }
 
+    this.setState({save: true});
+
     this.props.actions.saveCourse(this.state.course)
       .then(()=> {
         this.redirect();
         toastr.success('Course saved');
       })
-      .catch(error => {                 
+      .catch(error => {
+        this.setState({save: false});           
         toastr.error(error);        
       });    
   }
@@ -79,11 +83,12 @@ class ManageCoursePage extends React.Component {
       return(        
         <CourseForm
           course={this.state.course}
-          authorText={this.state.course.authorId}
+          author={this.state.course.authorId}
           onChange={this.updateCourseState}
           onSave={this.saveCourse}
           allAuthors={this.props.authors}
-          errors={this.state.errors}            
+          errors={this.state.errors}
+          save={this.state.save}
         />
       );
   }
